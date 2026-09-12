@@ -53,6 +53,13 @@ export interface VideoAsset {
 export interface VenueInfo {
   name: string;
   address: string;
+  /**
+   * Tautan Google Maps. Bila diisi, muncul satu tombol di bawah alamat.
+   * Tidak ada peta yang disematkan — embed memuat skrip dan cookie Google
+   * begitu bagian acara masuk layar, sementara tombol tidak memuat apa pun
+   * sampai tamu benar-benar menekannya.
+   */
+  mapsUrl?: string;
 }
 
 export interface EventItem {

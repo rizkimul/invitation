@@ -91,6 +91,7 @@ export const config: InvitationConfig = {
   venue: {
     name: 'Bikasoga Indoor Hall',
     address: 'Jl. Suryalaya Indah No. 1-3, Cijagra, Kec. Buahbatu, Kota Bandung, Jawa Barat 40265',
+    mapsUrl: 'https://maps.app.goo.gl/4UkvrtSDkVrRAucm7',
   },
 
   events: [

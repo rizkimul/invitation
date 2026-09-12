@@ -58,6 +58,17 @@ export function Events(config: InvitationConfig): RawHtml {
             <p class="t-body mx-auto mt-1 max-w-[19rem] text-[.82rem] leading-[1.65] text-[var(--color-ink-3)]">
               ${venue.address}
             </p>
+
+            ${venue.mapsUrl
+              ? html`<a
+                  class="btn mt-6 !px-6"
+                  href="${venue.mapsUrl}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  ${icons.pin(13)} <span>Lihat Lokasi</span>
+                </a>`
+              : ''}
           </div>
         </div>
       </article>
