@@ -128,7 +128,7 @@ export function mountChrome(config: InvitationConfig, audio: BackgroundAudio | n
     void shareInvitation({
       title: `Undangan Pernikahan ${pairTitle}`,
       text: `${pairTitle} — ${config.mainDateLabel}`,
-      url: invitationUrl(config.siteUrl),
+      url: invitationUrl(),
     });
   });
 }

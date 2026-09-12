@@ -41,7 +41,6 @@ const LANDSCAPE = 5472 / 3648; // 1.5
  *  Ganti nilainya, seluruh halaman ikut berubah.
  * ==================================================================== */
 export const config: InvitationConfig = {
-  siteUrl: 'https://undangan.example.id',
   hashtag: '#RIZKitallforZAHRA',
   defaultGuest: 'Bapak / Ibu / Saudara/i',
 

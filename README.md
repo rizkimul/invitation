@@ -39,7 +39,7 @@ Tidak perlu menyentuh berkas komponen untuk mengganti konten. Bagian yang paling
 | `gallery[]` | Foto galeri beserta caption dan penempatan grid |
 | `gift.accounts` | Rekening bank |
 | `rsvp.deadlineLabel` | Batas konfirmasi |
-| `hashtag`, `siteUrl` | Tagar dan alamat kanonik untuk tombol bagikan |
+| `hashtag` | Tagar di bagian penutup |
 
 ### Catatan: `story[]`
 
@@ -210,14 +210,29 @@ Hasil build adalah berkas statis di `dist/` — bisa di host mana saja.
 | Output Directory | `dist` |
 | Install Command | `npm install` |
 
-Isi `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` di Environment Variables kalau memakai Supabase.
+### Environment Variables
 
-Setelah punya alamat aslinya, perbarui tiga hal:
+| Nama | Wajib? | Isi |
+|---|---|---|
+| `VITE_SUPABASE_URL` | kalau pakai Supabase | URL project Supabase |
+| `VITE_SUPABASE_ANON_KEY` | kalau pakai Supabase | Anon key |
+| `VITE_SITE_URL` | opsional | Alamat kanonik, tanpa garis miring di akhir |
 
-1. `siteUrl` di config — dipakai tombol bagikan.
-2. `og:image` di `index.html` — **harus URL absolut**. WhatsApp dan Facebook tidak bisa membaca
-   path relatif, jadi preview-nya akan kosong kalau dibiarkan.
-3. `og:url` di `index.html`.
+### Preview WhatsApp
+
+`og:url` dan `og:image` **harus URL absolut** — WhatsApp, Facebook, dan Telegram tidak
+menjalankan JavaScript dan tidak bisa membaca path relatif, jadi preview undangannya akan
+kosong. Keduanya diisi otomatis saat build dari `%SITE_URL%` di `index.html`, dengan urutan:
+
+1. `VITE_SITE_URL` kalau diisi
+2. `VERCEL_PROJECT_PRODUCTION_URL` — otomatis ada di Vercel, jadi **tidak perlu diatur apa-apa**
+3. kosong — kembali jadi path relatif, sama seperti tanpa plugin ini
+
+Jadi di Vercel tidak ada yang perlu disentuh setelah deploy. Isi `VITE_SITE_URL` hanya kalau
+memakai domain sendiri, atau saat host-nya bukan Vercel.
+
+Uji hasilnya lewat [Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)
+setelah deploy pertama.
 
 ---
 
@@ -227,8 +242,8 @@ Setelah punya alamat aslinya, perbarui tiga hal:
 - [ ] Tanggal & jam di `mainDateISO`, `mainDateLabel`, dan setiap entri `events[]`
 - [ ] Nama dan alamat `venue`
 - [ ] Nomor rekening yang asli
-- [ ] Tagar dan `siteUrl`
-- [ ] `og:image` absolut dan `og:url` di `index.html`
+- [ ] Tagar
+- [ ] Preview WhatsApp sudah muncul gambarnya (uji lewat Sharing Debugger)
 - [ ] Berkas `public/audio/backsound.mp3`
 - [ ] Isi `story[]` dan caption galeri
 - [ ] Supabase tersambung, dan sudah diuji kirim satu RSVP

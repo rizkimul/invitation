@@ -124,8 +124,6 @@ export interface MusicConfig {
 }
 
 export interface InvitationConfig {
-  /** Slug/URL kanonik untuk tombol bagikan. */
-  siteUrl: string;
   hashtag: string;
   /** Sapaan default bila parameter ?to= kosong. */
   defaultGuest: string;

@@ -1,7 +1,7 @@
 /**
  * Sapaan personal via query string.
  * Mendukung: ?to=, ?kepada=, ?guest=, ?u=
- * Contoh: https://undangan.example.id/?to=Keluarga%20Bapak%20Hendra
+ * Contoh: https://domain-kamu.com/?to=Keluarga%20Bapak%20Hendra
  */
 const KEYS = ['to', 'kepada', 'guest', 'u'];
 
@@ -27,8 +27,14 @@ function sanitize(value: string): string {
     .slice(0, 80);
 }
 
-/** URL undangan lengkap untuk tombol bagikan. */
-export function invitationUrl(siteUrl: string): string {
-  if (typeof window === 'undefined') return siteUrl;
-  return window.location.href || siteUrl;
+/**
+ * URL yang dibagikan lewat tombol bagikan.
+ *
+ * Selalu alamat yang sedang dibuka — termasuk parameter ?to= milik tamu itu.
+ * Dulu fungsi ini menerima `config.siteUrl` sebagai cadangan, padahal cabang
+ * itu tidak pernah tercapai di peramban, sehingga nilai config-nya diam-diam
+ * tidak pernah dipakai sama sekali.
+ */
+export function invitationUrl(): string {
+  return window.location.href;
 }
