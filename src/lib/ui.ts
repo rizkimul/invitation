@@ -1,4 +1,11 @@
-/** Notifikasi ringkas ala toast, bergaya kertas. */
+/**
+ * Notifikasi ringkas ala toast.
+ *
+ * Versi lama memakai --color-clay, --color-paper, dan --font-mono: tiga
+ * variabel milik tema Editorial Vintage yang tidak pernah didefinisikan di
+ * tema ini. Akibatnya `color` dan `background` sama-sama jatuh ke #22252c dan
+ * teksnya tidak terlihat sama sekali — di semua peramban, bukan cuma sebagian.
+ */
 let host: HTMLElement | null = null;
 
 export function toast(message: string, tone: 'default' | 'error' = 'default'): void {
@@ -11,11 +18,12 @@ export function toast(message: string, tone: 'default' | 'error' = 'default'): v
   const item = document.createElement('div');
   item.setAttribute('role', 'status');
   item.className =
-    'pointer-events-auto max-w-[26rem] border px-4 py-3 text-center transition-all duration-500 ' +
+    'pointer-events-auto max-w-[26rem] rounded-full border px-5 py-3 text-center shadow-[0_14px_40px_-18px_rgba(20,22,28,.75)] transition-all duration-500 ' +
     (tone === 'error'
-      ? 'border-[color-mix(in_srgb,var(--color-clay)_55%,transparent)] bg-[var(--color-paper)] text-[var(--color-clay)]'
-      : 'border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-paper)]');
-  item.style.cssText += 'font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;opacity:0;transform:translateY(10px)';
+      ? 'border-[var(--color-mocha)] bg-[var(--color-frost)] text-[var(--color-mocha)]'
+      : 'border-[var(--color-ink)] bg-[var(--color-ink)] text-[var(--color-frost)]');
+  item.style.cssText +=
+    'font-family:var(--font-body);font-weight:500;font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;opacity:0;transform:translateY(10px)';
   item.textContent = message;
   host.appendChild(item);
 

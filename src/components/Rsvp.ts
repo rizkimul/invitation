@@ -108,9 +108,19 @@ export async function mountRsvp(): Promise<void> {
     }
   };
 
+  // Cadangan untuk :has() — lihat .radio-card di main.css. Firefox < 121 tidak
+  // mendukungnya, dan tanpa penanda apa pun tamu tidak tahu pilihannya masuk.
+  const markSelected = (): void => {
+    for (const input of form.querySelectorAll<HTMLInputElement>('input[name="attendance"]')) {
+      input.closest('.radio-card')?.classList.toggle('is-selected', input.checked);
+    }
+  };
+  markSelected();
+
   form.addEventListener('change', (event) => {
     const target = event.target as HTMLInputElement;
     if (target.name !== 'attendance') return;
+    markSelected();
     countWrap?.classList.toggle('hidden', target.value === 'tidak-hadir');
   });
 

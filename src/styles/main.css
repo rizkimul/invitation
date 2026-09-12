@@ -452,7 +452,11 @@
     color: var(--color-ink-3);
     transition: all 0.3s var(--ease-glass);
   }
-  .radio-card:has(input:checked) {
+  /* Dua selektor untuk satu keadaan. `:has()` belum ada di Firefox < 121,
+     dan tanpa penanda apa pun tamu tidak tahu pilihannya sudah masuk — maka
+     kelas .is-selected dipasang lewat JS sebagai cadangan yang selalu jalan. */
+  .radio-card:has(input:checked),
+  .radio-card.is-selected {
     background: var(--color-ink);
     border-color: var(--color-ink);
     color: var(--color-frost);
