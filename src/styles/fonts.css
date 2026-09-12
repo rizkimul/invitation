@@ -1,0 +1,21 @@
+/**
+ * Tipografi "Aurora Glass" — di-host sendiri via @fontsource.
+ *
+ * Fraunces → judul. Serif kontemporer dengan lekuk lembut; terbaca jelas
+ *            walau berada di atas panel tembus pandang.
+ * Manrope  → teks isi & antarmuka. Sans geometris-humanis, tinggi-x besar,
+ *            sangat legibel pada ukuran kecil di atas latar berfoto.
+ * Amiri    → kutipan ayat berbahasa Arab.
+ */
+
+@import '@fontsource/fraunces/latin-300.css';
+@import '@fontsource/fraunces/latin-400.css';
+@import '@fontsource/fraunces/latin-500.css';
+@import '@fontsource/fraunces/latin-400-italic.css';
+
+@import '@fontsource/manrope/latin-300.css';
+@import '@fontsource/manrope/latin-400.css';
+@import '@fontsource/manrope/latin-500.css';
+@import '@fontsource/manrope/latin-600.css';
+
+@import '@fontsource/amiri/arabic-400.css';
