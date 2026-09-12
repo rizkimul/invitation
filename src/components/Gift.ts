@@ -1,6 +1,6 @@
 import { delegate, html, raw, type RawHtml } from '@/lib/dom';
 import { copyText, formatNumber, toast } from '@/lib/ui';
-import type { BankAccount, InvitationConfig } from '@/types/invitation';
+import type { BankAccount, InvitationConfig, ShippingInfo } from '@/types/invitation';
 import { icons } from './icons';
 import { sectionHead, title } from './section';
 
@@ -31,6 +31,42 @@ function accountCard(account: BankAccount, index: number): RawHtml {
   `;
 }
 
+/**
+ * Alamat kirim kado.
+ *
+ * Tombol salinnya memindahkan penerima + alamat + nomor sekaligus dalam bentuk
+ * berbaris — itu yang langsung bisa ditempel tamu ke aplikasi kurir, bukan
+ * nomor rekening seperti kartu di atasnya.
+ */
+function shippingCard(shipping: ShippingInfo): RawHtml {
+  const clipboard = [shipping.recipient, ...shipping.address, shipping.phone].filter(Boolean).join('\n');
+
+  return html`
+    <div class="glass glass-sheen mt-3 px-5 py-5" data-reveal="rise">
+      <div class="flex items-start justify-between gap-4">
+        <div class="min-w-0">
+          <p class="t-label !text-[.5625rem] !text-[var(--color-denim)]">${shipping.label}</p>
+          <p class="mt-1.5 text-[.9rem] font-medium text-[var(--color-ink)]">${shipping.recipient}</p>
+          <p class="t-body mt-1.5 text-[.83rem] leading-[1.75] text-[var(--color-ink-3)]">
+            ${shipping.address.map((line, i) => html`${i > 0 ? raw('<br />') : ''}${line}`)}
+          </p>
+          ${shipping.phone
+            ? html`<p class="t-body mt-1.5 text-[.83rem] tabular-nums text-[var(--color-ink-2)]">${shipping.phone}</p>`
+            : ''}
+        </div>
+        <button
+          type="button"
+          class="btn !h-10 !w-10 flex-none !rounded-full !p-0"
+          data-copy="${clipboard}"
+          aria-label="Salin alamat pengiriman"
+        >
+          ${icons.copy(15)}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
 export function Gift(config: InvitationConfig): RawHtml {
   if (!config.gift.enabled) return raw('');
   const { gift } = config;
@@ -48,6 +84,8 @@ export function Gift(config: InvitationConfig): RawHtml {
         ${gift.accounts.map((account, index) => accountCard(account, index))}
         ${gift.eWallets.map((wallet, index) => accountCard(wallet, gift.accounts.length + index))}
       </div>
+
+      ${gift.shipping ? shippingCard(gift.shipping) : ''}
 
       <p class="t-label t-on-photo mt-6 text-center !text-[.5625rem] !leading-[1.9] !text-white/75" data-reveal="up">
         Kehadiran dan doa Anda sudah lebih dari cukup bagi kami

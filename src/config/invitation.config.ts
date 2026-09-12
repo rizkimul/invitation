@@ -199,6 +199,16 @@ export const config: InvitationConfig = {
     /* Kosong: hanya dua rekening bank. Field-nya dipertahankan supaya
        template ini tetap bisa dipakai pasangan lain yang punya e-wallet. */
     eWallets: [],
+    shipping: {
+      label: 'Kirim Hadiah',
+      recipient: 'Zahra & Rizki',
+      address: [
+        'Jl. Babakan Tarogong No. 92/197A',
+        'Gg. Bojong Asih 3 RT 05 RW 04',
+        'Bandung 40232',
+      ],
+      // phone: '08xxxxxxxxxx',  ← isi nomor yang bisa dihubungi kurir
+    },
   },
 
   closing: {

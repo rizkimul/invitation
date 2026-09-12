@@ -96,11 +96,28 @@ export interface BankAccount {
   holder: string;
 }
 
+/**
+ * Alamat pengiriman kado fisik.
+ *
+ * `address` berupa larik baris, bukan satu kalimat panjang: alamat memang
+ * ditulis berbaris, dan itu juga bentuk yang benar saat tamu menyalinnya ke
+ * aplikasi kurir.
+ */
+export interface ShippingInfo {
+  label: string;
+  recipient: string;
+  address: string[];
+  /** Nomor yang bisa dihubungi kurir. Opsional, tapi sangat disarankan. */
+  phone?: string;
+}
+
 export interface GiftConfig {
   enabled: boolean;
   intro: string;
   accounts: BankAccount[];
   eWallets: BankAccount[];
+  /** Bila diisi, muncul kartu alamat kirim kado di bawah daftar rekening. */
+  shipping?: ShippingInfo;
 }
 
 export interface QuoteConfig {
