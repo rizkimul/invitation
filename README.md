@@ -43,12 +43,9 @@ Tidak perlu menyentuh berkas komponen untuk mengganti konten. Bagian yang paling
 
 ### Catatan: `story[]`
 
-Bentuk tampilnya mengikuti cara kamu menulis, bukan diatur terpisah:
-
-- **Lebih dari satu `lines`** → dipasang sebagai bait: huruf lebih besar, jarak baris lega.
-- **Satu `lines` panjang** → dipasang sebagai prosa: huruf sedikit lebih kecil dan rapat.
-
-Jadi penggalan baris yang kamu tulis itulah yang menentukan ritmenya.
+Setiap entri di `lines` menjadi satu paragraf. Semua babak memakai ukuran huruf, jarak baris,
+dan jarak antar paragraf yang sama, jadi pecah tulisan menjadi beberapa `lines` hanya bila
+memang ingin ada jeda paragraf.
 
 ### Catatan: tanggal ada di beberapa tempat
 
