@@ -5,9 +5,14 @@ import { icons } from './icons';
 import { sectionHead, title } from './section';
 
 /**
- * Galeri sebagai rel geser horizontal dengan scroll-snap —
- * bukan grid — supaya foto latar tetap terlihat di sisi kiri/kanan
- * dan gerakannya terasa seperti membalik kartu kaca.
+ * Galeri sebagai rel geser horizontal dengan scroll-snap.
+ *
+ * Setiap foto tampil dengan rasio aslinya: potret lebih sempit dan tinggi,
+ * lanskap lebih lebar dan pendek. Sebelumnya semua dipaksa 3:4, sehingga
+ * foto lanskap kehilangan sisi kiri dan kanannya. Foto berikutnya selalu
+ * mengintip di tepi, dan penghitung "n / total" di bawah rel memberi tahu
+ * tamu masih ada berapa foto lagi — titik indikator kecil terlalu mudah
+ * terlewat.
  */
 export function Gallery(config: InvitationConfig): RawHtml {
   if (!config.gallery.length) return raw('');
@@ -23,17 +28,21 @@ export function Gallery(config: InvitationConfig): RawHtml {
         </div>
       </div>
 
-      <div class="rail no-scrollbar mt-5 pb-2">
-        ${config.gallery.map(
-          (item, index) => html`
+      <div id="gallery-rail" class="rail no-scrollbar relative mt-5 items-center pb-2">
+        ${config.gallery.map((item, index) => {
+          const wide = item.image.ratio > 1;
+          return html`
             <figure
-              class="cursor-zoom-in"
+              class="cursor-zoom-in ${wide ? '!basis-[88%]' : '!basis-[70%]'}"
               data-lightbox="${index}"
               data-reveal="blur"
               style="--reveal-delay:${(index % 3) * 70}ms"
             >
-              <div class="frame aspect-[3/4] shadow-[0_20px_50px_-24px_rgba(20,22,28,.7)] ring-1 ring-white/40">
-                ${picture(item.image, { sizes: '78vw' })}
+              <div
+                class="frame shadow-[0_20px_50px_-24px_rgba(20,22,28,.7)] ring-1 ring-white/40"
+                style="aspect-ratio:${item.image.ratio}"
+              >
+                ${picture(item.image, { sizes: wide ? '(min-width:1024px) 29rem, 88vw' : '(min-width:1024px) 23rem, 70vw' })}
               </div>
               ${item.caption
                 ? html`<figcaption class="t-label t-on-photo mt-2.5 !text-[.5rem] !text-white/75">
@@ -41,9 +50,13 @@ export function Gallery(config: InvitationConfig): RawHtml {
                   </figcaption>`
                 : ''}
             </figure>
-          `,
-        )}
+          `;
+        })}
       </div>
+
+      <p class="t-on-photo mt-3 text-center text-[.78rem] tabular-nums text-white/80" aria-live="polite">
+        <span id="gallery-count">1</span> / ${config.gallery.length}
+      </p>
     </section>
 
     <!-- Lightbox -->
@@ -131,6 +144,37 @@ export function mountGallery(config: InvitationConfig): void {
   };
 
   delegate(gallerySection, 'click', '[data-lightbox]', (el) => open(Number(el.dataset['lightbox'] ?? 0)));
+
+  // Penghitung: foto yang titik tengahnya paling dekat ke tengah rel.
+  const rail = $('#gallery-rail');
+  const count = $('#gallery-count');
+  if (rail && count) {
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const mid = rail.scrollLeft + rail.clientWidth / 2;
+      let best = 0;
+      let bestDist = Infinity;
+      Array.from(rail.children).forEach((child, i) => {
+        const el = child as HTMLElement;
+        const dist = Math.abs(el.offsetLeft + el.offsetWidth / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = i;
+        }
+      });
+      count.textContent = String(best + 1);
+    };
+    rail.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(update);
+      },
+      { passive: true },
+    );
+  }
 
   box.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;

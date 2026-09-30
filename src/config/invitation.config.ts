@@ -172,12 +172,22 @@ export const config: InvitationConfig = {
   // },
 
   gallery: [
-    { image: img('01-rug-portrait', 'Berpose di atas karpet Persia', PORTRAIT), layout: 'tall', caption: 'Plate 01 — Studio, Bandung' },
-    { image: img('05-books-faces', 'Menutup wajah dengan buku', LANDSCAPE), layout: 'wide', caption: 'Plate 02 — Reading hour' },
-    { image: img('03-sofa-brown', 'Sofa cokelat dan dinding beton', PORTRAIT), layout: 'tall', caption: 'Plate 03 — Concrete room' },
-    { image: img('02-rug-smile', 'Tertawa di atas karpet', PORTRAIT), layout: 'tall', caption: 'Plate 04 — Off guard' },
-    { image: img('06-sofa-wide', 'Duduk berdampingan', LANDSCAPE), layout: 'wide', caption: 'Plate 05 — At ease' },
-    { image: img('04-motion-blur', 'Motion blur', PORTRAIT), layout: 'tall', caption: 'Plate 06 — Passing by' },
+    /* Urutan disusun untuk ritme saat digeser: potret (P) dan lanskap (L)
+       bergantian — tidak ada dua lanskap berurutan, paling banyak dua potret
+       berurutan — dan tiga pose dengan buku sengaja dijauhkan satu sama lain.
+       P L P L P P L P L P L P */
+    { image: img('g01-dinding-cokelat', 'Berdiri berdampingan di depan dinding panel cokelat', PORTRAIT), layout: 'tall' },
+    { image: img('g02-sofa-tersenyum', 'Tersenyum berdampingan di sofa', LANDSCAPE), layout: 'wide' },
+    { image: img('g03-sorot-cahaya', 'Berdiri berdampingan di bawah sorot cahaya', 4017 / 5724), layout: 'tall' },
+    { image: img('g04-buku-menutup', 'Menutup wajah dengan buku', LANDSCAPE), layout: 'wide' },
+    { image: img('g05-sofa-cokelat', 'Zahra berdiri, Rizki duduk di sofa cokelat', PORTRAIT), layout: 'tall' },
+    { image: img('g06-karpet-berdiri', 'Berpose di atas karpet dengan mesin tik dan buku', 3764 / 5837), layout: 'tall' },
+    { image: img('g07-buku-tersenyum', 'Tersenyum sambil memegang buku di depan wajah', LANDSCAPE), layout: 'wide' },
+    { image: img('g08-sofa-bersandar', 'Rizki duduk di sofa, Zahra bersandar di lengannya', PORTRAIT), layout: 'tall' },
+    { image: img('g09-sofa-lantai', 'Zahra duduk di sofa, Rizki duduk di lantai', LANDSCAPE), layout: 'wide' },
+    { image: img('g10-studio', 'Duduk berdampingan di studio', 3648 / 4159), layout: 'tall' },
+    { image: img('g11-buku-mengintip', 'Mengintip dari balik buku', LANDSCAPE), layout: 'wide' },
+    { image: img('g12-tertawa', 'Saling menatap dan tertawa di sofa', PORTRAIT), layout: 'tall' },
   ],
 
   rsvp: {
