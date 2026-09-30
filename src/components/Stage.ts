@@ -40,6 +40,7 @@ export function Stage(config: InvitationConfig): RawHtml {
   const images = backgroundImages(config);
   const isSingle = images.length === 1;
   const treatment = config.stage?.mode === 'per-section' ? 'plain' : (config.stage?.treatment ?? 'plain');
+  const blurred = treatment === 'soft' || treatment === 'muted';
 
   return html`
     <div class="stage" data-treatment="${treatment}" aria-hidden="true">
@@ -47,7 +48,10 @@ export function Stage(config: InvitationConfig): RawHtml {
         (image, index) => html`
           <div class="stage__layer ${index === 0 ? 'is-active' : ''}" data-stage-layer="${index}">
             ${picture(image, {
-              sizes: '100vw',
+              // Latar yang diburamkan tidak butuh resolusi tinggi: ukuran kecil
+              // membuat peramban memilih varian 900px, bukan 1600px. Di Safari
+              // iOS itu menghemat ±10 MB memori grafis untuk satu lapisan ini.
+              sizes: blurred ? '30vw' : '100vw',
               loading: isSingle || index < 2 ? 'eager' : 'lazy',
               fetchPriority: index === 0 ? 'high' : 'auto',
               blurUp: false,

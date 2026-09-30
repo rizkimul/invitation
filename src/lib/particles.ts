@@ -67,7 +67,22 @@ export function mountDust(options: DustOptions = {}): () => void {
 
   // Perangkat dengan inti sedikit dapat porsi partikel lebih kecil.
   const cores = navigator.hardwareConcurrency ?? 4;
-  const budget = cores <= 4 ? 0.6 : 1;
+
+  /* Mode ringan untuk layar sentuh.
+     Diukur dengan emulasi HP (CPU diperlambat 4×): canvas debu ini sendirian
+     memakan kira-kira separuh waktu menggambar halaman, karena seluruh layar
+     digambar ulang 60× per detik. Di HP, beban itu yang membuat gulir berat
+     dan musik latar tersendat. Maka di layar sentuh:
+     - canvas digambar pada 1× piksel — partikelnya buram dan kecil, bedanya
+       tidak terlihat;
+     - 30 frame per detik — gerak debu yang pelan tetap halus;
+     - jumlah partikel separuh;
+     - berhenti selama halaman digulir, lanjut sesaat setelah gulir selesai.
+       Mata tidak mengikuti debu ketika halaman sedang bergerak. */
+  const lite = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const budget = (cores <= 4 ? 0.6 : 1) * (lite ? 0.5 : 1);
+  const maxDpr = lite ? 1 : 2;
+  const frameInterval = lite ? 1000 / 30 : 0;
 
   let width = 0;
   let height = 0;
@@ -93,7 +108,7 @@ export function mountDust(options: DustOptions = {}): () => void {
   const build = (): void => {
     width = window.innerWidth;
     height = window.innerHeight;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
@@ -106,6 +121,10 @@ export function mountDust(options: DustOptions = {}): () => void {
   };
 
   const frame = (now: number): void => {
+    if (frameInterval && now - last < frameInterval - 1) {
+      raf = requestAnimationFrame(frame);
+      return;
+    }
     const dt = Math.min(now - last, 64) / 1000;
     last = now;
 
@@ -156,21 +175,47 @@ export function mountDust(options: DustOptions = {}): () => void {
     resizeTimer = window.setTimeout(build, 180);
   };
 
+  let scrolling = false;
+  let scrollTimer = 0;
+  const onScroll = (): void => {
+    if (!scrolling) {
+      scrolling = true;
+      stop();
+    }
+    window.clearTimeout(scrollTimer);
+    scrollTimer = window.setTimeout(() => {
+      scrolling = false;
+      if (opened && !document.hidden) start();
+    }, 220);
+  };
+
   const onVisibility = (): void => {
     if (document.hidden) stop();
-    else start();
+    else if (opened && !scrolling) start();
   };
+
+  let opened = false;
 
   build();
   window.addEventListener('resize', onResize, { passive: true });
   document.addEventListener('visibilitychange', onVisibility);
+  if (lite) window.addEventListener('scroll', onScroll, { passive: true });
 
   // Selama sampul masih tertutup, debunya tidak terlihat — jangan buang baterai.
-  document.addEventListener('invitation:open', () => setTimeout(start, 300), { once: true });
+  document.addEventListener(
+    'invitation:open',
+    () =>
+      setTimeout(() => {
+        opened = true;
+        if (!scrolling) start();
+      }, 300),
+    { once: true },
+  );
 
   return () => {
     stop();
     window.removeEventListener('resize', onResize);
+    window.removeEventListener('scroll', onScroll);
     document.removeEventListener('visibilitychange', onVisibility);
   };
 }

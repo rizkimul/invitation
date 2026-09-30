@@ -69,16 +69,22 @@ function mountCover(audio: BackgroundAudio | null): void {
   button.addEventListener(
     'click',
     async () => {
+      // Musik dipanggil paling awal, masih di dalam ketukan tamu — Safari iOS
+      // hanya mengizinkan pemutaran yang dimulai langsung dari interaksi.
+      void audio?.play();
+
       cover.classList.add('is-open');
       lockScroll(false);
       window.scrollTo({ top: 0, behavior: 'auto' });
 
-      void audio?.play();
       document.dispatchEvent(new CustomEvent('invitation:open'));
 
       setTimeout(() => {
         cover.style.visibility = 'hidden';
         cover.setAttribute('aria-hidden', 'true');
+        // Sampul sudah tak terlihat: hentikan videonya. Kalau dibiarkan, ia
+        // terus didekode sepanjang halaman dibaca dan ikut merebut CPU.
+        cover.querySelector('video')?.pause();
       }, 1300);
     },
     { once: true },

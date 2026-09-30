@@ -26,20 +26,27 @@ function reveal(el: HTMLElement): void {
 function sweep(): void {
   scheduled = false;
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const limit = viewportHeight * ENTER_RATIO;
 
+  // Baca semua posisi dulu, baru ubah kelas. Membaca getBoundingClientRect()
+  // setelah menambah kelas memaksa peramban menghitung ulang tata letak di
+  // tengah frame — diulang puluhan kali per gulir, itu yang membuat HP tersendat.
+  const toReveal: HTMLElement[] = [];
   for (const el of pending) {
     const rect = el.getBoundingClientRect();
-    if (rect.top < viewportHeight * ENTER_RATIO && rect.bottom > 0) {
-      reveal(el);
-      pending.delete(el);
-    }
+    if (rect.top < limit && rect.bottom > 0) toReveal.push(el);
   }
-
+  const toggles: Array<[HTMLElement, boolean]> = [];
   for (const el of repeating) {
     const rect = el.getBoundingClientRect();
-    const visible = rect.top < viewportHeight * ENTER_RATIO && rect.bottom > 0;
-    el.classList.toggle('is-in', visible);
+    toggles.push([el, rect.top < limit && rect.bottom > 0]);
   }
+
+  for (const el of toReveal) {
+    reveal(el);
+    pending.delete(el);
+  }
+  for (const [el, visible] of toggles) el.classList.toggle('is-in', visible);
 }
 
 function schedule(): void {

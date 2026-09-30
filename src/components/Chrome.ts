@@ -128,7 +128,6 @@ function mountMusicButton(button: HTMLButtonElement, audio: BackgroundAudio): vo
   let spin: Animation | null = null;
   let settle: Animation | null = null;
   let angle = 0;
-  let stateTimer: number | null = null;
 
   const setState = (playing: boolean): void => {
     button.dataset['state'] = playing ? 'playing' : 'paused';
@@ -170,30 +169,27 @@ function mountMusicButton(button: HTMLButtonElement, audio: BackgroundAudio): vo
     return SETTLE_MS;
   };
 
-  const sync = (): void => {
-    const playing = audio.isPlaying;
-    setState(playing);
-    if (playing) startSpin();
-  };
-
-  button.addEventListener('click', async () => {
-    if (stateTimer) window.clearTimeout(stateTimer);
-
-    if (audio.isPlaying) {
-      audio.pause();
-      pulse();
-      const duration = settleSpin();
-      // Ikon berganti ketika putaran sudah hampir diam, bukan di awal.
-      stateTimer = window.setTimeout(() => setState(false), duration * 0.55);
-      return;
-    }
-
-    if (await audio.play()) {
+  // Tampilan mengikuti event media dari BackgroundAudio, bukan tebakan waktu.
+  // Saat dijeda lewat tombol, perlambatan putaran sudah dimulai di handler
+  // klik; event `pause` (yang datang setelah volume selesai memudar) tinggal
+  // mengganti ikonnya. Saat dijeda oleh sistem, perlambatan dimulai di sini.
+  audio.onChange((playing) => {
+    if (playing) {
       setState(true);
-      pulse();
       startSpin();
+    } else {
+      if (spin) settleSpin();
+      setState(false);
     }
   });
 
-  document.addEventListener('invitation:open', () => setTimeout(sync, 400));
+  button.addEventListener('click', () => {
+    pulse();
+    if (audio.isPlaying) {
+      settleSpin();
+      audio.pause();
+    } else {
+      void audio.play();
+    }
+  });
 }

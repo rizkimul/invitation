@@ -145,6 +145,26 @@ export function mountGallery(config: InvitationConfig): void {
 
   delegate(gallerySection, 'click', '[data-lightbox]', (el) => open(Number(el.dataset['lightbox'] ?? 0)));
 
+  // Foto di rel geser memakai loading="lazy". Di dalam wadah yang digulir ke
+  // samping, Chrome dan Safari HP baru mengunduhnya ketika foto itu sendiri
+  // sudah masuk layar — jadi yang tampil saat digeser adalah kotak kosong.
+  // Begitu galeri mendekati layar (±1 layar sebelum), semua fotonya diminta
+  // sekaligus. Dua belas foto 900px totalnya sekitar 900 KB.
+  const railEl = $('#gallery-rail');
+  if (railEl && 'IntersectionObserver' in window) {
+    const warm = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        railEl.querySelectorAll<HTMLImageElement>('img[loading="lazy"]').forEach((img) => {
+          img.loading = 'eager';
+        });
+        warm.disconnect();
+      },
+      { rootMargin: '100% 0px' },
+    );
+    warm.observe(railEl);
+  }
+
   // Penghitung: foto yang titik tengahnya paling dekat ke tengah rel.
   const rail = $('#gallery-rail');
   const count = $('#gallery-count');

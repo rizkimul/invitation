@@ -24,10 +24,16 @@ export function motionAllowed(): boolean {
   return true;
 }
 
-/** Memilih varian lebar sesuai layar & kerapatan piksel, sekali saat render. */
+/**
+ * Memilih varian lebar sesuai layar & kerapatan piksel, sekali saat render.
+ *
+ * Kerapatan dibatasi 1.5×: semua video di sini berada di bawah kerudung gelap
+ * atau di balik teks, jadi 720p di HP tidak terlihat bedanya dengan 1080p —
+ * tapi dekodenya kira-kira separuh lebih ringan.
+ */
 function pickWidth(asset: VideoAsset): number {
   const widths = asset.mp4.map(([w]) => w).sort((a, b) => a - b);
-  const target = Math.min(window.innerWidth || 420, 640) * Math.min(window.devicePixelRatio || 1, 2);
+  const target = Math.min(window.innerWidth || 420, 640) * Math.min(window.devicePixelRatio || 1, 1.5);
   return widths.find((w) => w >= target) ?? widths.at(-1) ?? 720;
 }
 
@@ -87,8 +93,12 @@ export function video(asset: VideoAsset, options: VideoOptions = {}): RawHtml {
       )}
       aria-label="${asset.alt}"
     >
-      <source src="${sourceFor(asset.webm, width)}" type="video/webm" />
+      <!-- MP4 (H.264) lebih dulu. Hampir semua HP mendekode H.264 dengan chip
+           khusus; WebM/VP9 di banyak Android didekode CPU, dan CPU yang sibuk
+           itulah yang bikin musik latar tersendat saat halaman digulir.
+           Safari iOS lama juga bisa memilih WebM lalu gagal memutarnya. -->
       <source src="${sourceFor(asset.mp4, width)}" type="video/mp4" />
+      <source src="${sourceFor(asset.webm, width)}" type="video/webm" />
     </video>
   `;
 }
