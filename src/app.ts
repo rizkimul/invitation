@@ -47,7 +47,7 @@ export function bootstrap(root: HTMLElement): void {
   audio?.init();
 
   mountCover(audio);
-  mountChrome(config, audio);
+  mountChrome(audio);
   mountStage();
   mountDust({ density: config.particles?.density ?? 1 });
   mountVideos();

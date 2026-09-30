@@ -1,10 +1,7 @@
 import { $, $$, delegate, html, type RawHtml } from '@/lib/dom';
 import type { BackgroundAudio } from '@/lib/audio';
 import type { InvitationConfig } from '@/types/invitation';
-import { shareInvitation } from '@/lib/ui';
-import { invitationUrl } from '@/lib/guest';
 import { icons } from './icons';
-import { orderedCouple } from '@/lib/couple';
 
 interface NavItem {
   id: string;
@@ -35,18 +32,15 @@ export function Chrome(config: InvitationConfig): RawHtml {
         ? html`<button
             id="music-toggle"
             type="button"
-            class="${CONTROL}"
+            class="music-btn ${CONTROL}"
+            data-state="paused"
             aria-label="Putar atau hentikan musik"
             aria-pressed="false"
           >
-            <span data-music-on class="hidden animate-[spin_5s_linear_infinite]">${icons.music(16)}</span>
+            <span data-music-on><span data-music-disc class="inline-flex">${icons.music(16)}</span></span>
             <span data-music-off>${icons.mute(16)}</span>
           </button>`
         : ''}
-
-      <button id="share-btn" type="button" class="${CONTROL}" aria-label="Bagikan undangan">
-        ${icons.share(16)}
-      </button>
     </div>
 
     <nav
@@ -76,7 +70,7 @@ export function Chrome(config: InvitationConfig): RawHtml {
   `;
 }
 
-export function mountChrome(config: InvitationConfig, audio: BackgroundAudio | null): void {
+export function mountChrome(audio: BackgroundAudio | null): void {
   const dock = $('#dock');
   const controls = $('#floating-controls');
 
@@ -108,27 +102,98 @@ export function mountChrome(config: InvitationConfig, audio: BackgroundAudio | n
   }
 
   const musicBtn = $<HTMLButtonElement>('#music-toggle');
-  if (musicBtn && audio) {
-    const sync = () => {
-      const playing = audio.isPlaying;
-      musicBtn.setAttribute('aria-pressed', String(playing));
-      $('[data-music-on]', musicBtn)?.classList.toggle('hidden', !playing);
-      $('[data-music-off]', musicBtn)?.classList.toggle('hidden', playing);
-    };
-    musicBtn.addEventListener('click', async () => {
-      if (audio.isPlaying) audio.pause();
-      else await audio.play();
-      setTimeout(sync, 60);
-    });
-    document.addEventListener('invitation:open', () => setTimeout(sync, 400));
-  }
+  if (musicBtn && audio) mountMusicButton(musicBtn, audio);
+}
 
-  $('#share-btn')?.addEventListener('click', () => {
-    const { pairTitle } = orderedCouple(config);
-    void shareInvitation({
-      title: `Undangan Pernikahan ${pairTitle}`,
-      text: `${pairTitle} — ${config.mainDateLabel}`,
-      url: invitationUrl(),
+/**
+ * Tombol musik.
+ *
+ * Saat diputar, ikon not berputar pelan seperti piringan hitam. Saat dijeda,
+ * putarannya tidak berhenti mendadak: ia melambat sampai diam (bersamaan
+ * dengan volume yang memudar di BackgroundAudio), sebuah cincin tipis beriak
+ * keluar dari tombol, lalu ikonnya berganti ke ikon bisu dengan sedikit
+ * pantulan. Memutar lagi menjalankan kebalikannya.
+ *
+ * Putaran digerakkan lewat Web Animations API, bukan kelas CSS, supaya sudut
+ * terakhirnya bisa dibaca — perlambatan dimulai dari sudut itu, bukan
+ * melompat kembali ke 0°.
+ */
+const SPIN_MS = 5000;
+const SETTLE_MS = 900;
+
+function mountMusicButton(button: HTMLButtonElement, audio: BackgroundAudio): void {
+  const disc = $('[data-music-disc]', button);
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let spin: Animation | null = null;
+  let settle: Animation | null = null;
+  let angle = 0;
+  let stateTimer: number | null = null;
+
+  const setState = (playing: boolean): void => {
+    button.dataset['state'] = playing ? 'playing' : 'paused';
+    button.setAttribute('aria-pressed', String(playing));
+  };
+
+  const pulse = (): void => {
+    if (reduceMotion) return;
+    button.classList.remove('is-pulse');
+    void button.offsetWidth; // mulai ulang animasi riak
+    button.classList.add('is-pulse');
+  };
+  button.addEventListener('animationend', () => button.classList.remove('is-pulse'));
+
+  const startSpin = (): void => {
+    if (reduceMotion || !disc || spin) return;
+    settle?.cancel();
+    settle = null;
+    spin = disc.animate([{ transform: `rotate(${angle}deg)` }, { transform: `rotate(${angle + 360}deg)` }], {
+      duration: SPIN_MS,
+      iterations: Infinity,
     });
+  };
+
+  /** Memperlambat putaran sampai berhenti. Mengembalikan lamanya (ms). */
+  const settleSpin = (): number => {
+    if (!spin || !disc) return 0;
+    const elapsed = Number(spin.currentTime ?? 0) % SPIN_MS;
+    angle = (angle + (elapsed / SPIN_MS) * 360) % 360;
+    spin.cancel();
+    spin = null;
+    const end = angle + 140;
+    settle = disc.animate([{ transform: `rotate(${angle}deg)` }, { transform: `rotate(${end}deg)` }], {
+      duration: SETTLE_MS,
+      easing: 'cubic-bezier(.15,.6,.3,1)',
+      fill: 'forwards',
+    });
+    angle = end % 360;
+    return SETTLE_MS;
+  };
+
+  const sync = (): void => {
+    const playing = audio.isPlaying;
+    setState(playing);
+    if (playing) startSpin();
+  };
+
+  button.addEventListener('click', async () => {
+    if (stateTimer) window.clearTimeout(stateTimer);
+
+    if (audio.isPlaying) {
+      audio.pause();
+      pulse();
+      const duration = settleSpin();
+      // Ikon berganti ketika putaran sudah hampir diam, bukan di awal.
+      stateTimer = window.setTimeout(() => setState(false), duration * 0.55);
+      return;
+    }
+
+    if (await audio.play()) {
+      setState(true);
+      pulse();
+      startSpin();
+    }
   });
+
+  document.addEventListener('invitation:open', () => setTimeout(sync, 400));
 }
