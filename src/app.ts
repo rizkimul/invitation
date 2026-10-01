@@ -22,6 +22,7 @@ import { Wishes, mountWishes } from '@/components/Wishes';
 import { Gift, mountGift } from '@/components/Gift';
 import { Closing } from '@/components/Closing';
 import { Chrome, mountChrome } from '@/components/Chrome';
+import { mountTicket } from '@/components/ornaments';
 
 export function bootstrap(root: HTMLElement): void {
   const guestName = getGuestName(config.defaultGuest);
@@ -56,6 +57,7 @@ export function bootstrap(root: HTMLElement): void {
   mountCountdown(config);
 
   initReveal();
+  mountTicket();
 
   void mountRsvp();
   void mountWishes();

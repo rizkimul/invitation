@@ -797,3 +797,142 @@
 .head-card [data-reveal='line'] {
   background: rgba(255, 255, 255, 0.32);
 }
+
+/* ==================================================================
+   ORNAMEN
+   Dua tema benda cetak: kertas undangan (tiket, monogram timbul, segel)
+   dan foto cetak yang terselip di belakang kartu. Lihat ornaments.ts.
+   ================================================================== */
+
+/* ---------- Monogram ----------
+   Logo mempelai dipakai sebagai masker: bentuknya dari SVG, warnanya dari
+   `background`. Satu berkas, warna mengikuti permukaan. */
+.monogram {
+  display: block;
+  aspect-ratio: 2892 / 2560;
+  background: currentColor;
+  -webkit-mask: url('/images/monogram.svg') center / contain no-repeat;
+  mask: url('/images/monogram.svg') center / contain no-repeat;
+}
+
+/* Sampul: putih di atas foto, bayangan halus agar tetap terbaca. */
+.cover-mark {
+  width: 4.25rem;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.92);
+  filter: drop-shadow(0 1px 8px rgba(18, 21, 28, 0.45));
+}
+
+/* ---------- Foto terselip ----------
+   Cetakan diletakkan di alur dokumen dengan margin negatif: bagian atasnya
+   naik ke samping judul, bagian bawahnya ditindih kartu berikutnya.
+   --k = seberapa jauh foto naik melewati batas bawah kepala section. */
+.orn-print {
+  --w: 6.5rem;
+  --ar: 1.45;
+  --pad: 0.3125rem;
+  --k: 2.75rem;
+  --h: calc((var(--w) - 2 * var(--pad)) * var(--ar) + 2 * var(--pad));
+  position: relative;
+  z-index: 0;
+  width: var(--w);
+  margin: calc(-1 * var(--k) - 1rem) -0.5rem calc(1rem + var(--k) - var(--h)) auto;
+  padding: var(--pad);
+  background: #f3f1ed;
+  border-radius: 3px;
+  box-shadow:
+    0 1px 1px rgba(10, 12, 18, 0.25),
+    0 6px 12px -2px rgba(10, 12, 18, 0.3),
+    0 18px 32px -10px rgba(10, 12, 18, 0.55);
+  transform: rotate(6deg);
+}
+.orn-print img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / var(--ar);
+  object-fit: cover;
+  border-radius: 1px;
+}
+.orn-print + * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Monogram timbul ----------
+   Tanpa tinta: warnanya senada kartu, hanya tepi terang di kiri atas dan
+   tepi gelap di kanan bawah yang membuatnya terbaca, seperti kertas yang
+   ditekan. Filter ada di pembungkus karena filter dijalankan sebelum
+   masker; kalau dipasang di elemen bermasker, bayangannya ikut terpotong. */
+.orn-host {
+  overflow: hidden;
+}
+.orn-emboss {
+  position: absolute;
+  right: -1.25rem;
+  bottom: -1.5rem;
+  z-index: -1;
+  width: 9.5rem;
+  filter: drop-shadow(-1px -1px 0 rgba(255, 255, 255, 0.95)) drop-shadow(1px 1px 0.5px rgba(40, 48, 62, 0.2));
+  pointer-events: none;
+}
+.orn-emboss__mark {
+  color: rgba(226, 229, 235, 0.95);
+}
+
+/* ---------- Tiket ----------
+   Takik di kedua sisi dibuat dengan masker; --notch-y diisi mountTicket().
+   Masker ikut memotong box-shadow kartu, jadi bayangannya dipindah ke
+   section sebagai drop-shadow yang mengikuti bentuk tiket. */
+.orn-ticket {
+  -webkit-mask:
+    radial-gradient(circle 0.8rem at 0 var(--notch-y, 50%), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 0.8rem at 100% var(--notch-y, 50%), #0000 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle 0.8rem at 0 var(--notch-y, 50%), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 0.8rem at 100% var(--notch-y, 50%), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+#acara {
+  filter: drop-shadow(0 2px 3px rgba(24, 30, 42, 0.14)) drop-shadow(0 16px 22px rgba(24, 30, 42, 0.22));
+}
+.orn-ticket__seam {
+  height: 0;
+  margin: 2rem -1.5rem 0;
+  border-top: 1.5px dashed rgba(34, 37, 44, 0.2);
+}
+.orn-ticket__list {
+  margin-top: 0;
+  border-top: 0;
+}
+
+/* ---------- Segel penutup ----------
+   Biru denim dari palet undangan, bukan marun logo aslinya: segel ini
+   satu-satunya bidang berwarna pekat di halaman, jadi warnanya harus
+   bersaudara dengan aksen lain (judul miring, tanggal), bukan pendatang. */
+.orn-seal {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 4.75rem;
+  height: 4.75rem;
+  margin: 2.25rem auto -2.375rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #66748f 0%, var(--color-denim) 52%, #323b4e 100%);
+  box-shadow:
+    inset 0 0 0 3px rgba(0, 0, 0, 0.14),
+    inset 0 0 0 4px rgba(255, 255, 255, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 5px rgba(0, 0, 0, 0.3),
+    0 2px 3px rgba(18, 22, 32, 0.3),
+    0 10px 20px -6px rgba(10, 12, 18, 0.55);
+}
+.orn-seal__mark {
+  width: 3.4rem;
+  margin-left: 0.15rem;
+  color: #eef1f6;
+  opacity: 0.94;
+}
+.orn-closing-card {
+  margin-top: 0;
+  padding-top: 3.25rem;
+}

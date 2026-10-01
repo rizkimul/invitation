@@ -4,6 +4,7 @@ import { video } from '@/lib/video';
 import { orderedCouple } from '@/lib/couple';
 import type { InvitationConfig } from '@/types/invitation';
 import { icons } from './icons';
+import { monogram } from './ornaments';
 
 /**
  * Sampul: foto penuh layar yang tajam, dengan satu panel kaca mengambang
@@ -43,7 +44,8 @@ export function Cover(config: InvitationConfig, guestName: string): RawHtml {
              Pada video sampul, subjek berada di tengah frame; nama yang ikut
              di tengah akan menimpa wajah. Ditaruh di atas, wajah tetap bersih. -->
         <div class="text-center">
-          <p class="t-label t-on-photo !text-white/80" data-cover-anim style="--d:120ms">
+          <div data-cover-anim style="--d:40ms">${monogram('cover-mark')}</div>
+          <p class="t-label t-on-photo mt-4 !text-white/80" data-cover-anim style="--d:120ms">
             ${config.opening.kicker}
           </p>
 

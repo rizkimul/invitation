@@ -4,6 +4,7 @@ import { toast } from '@/lib/ui';
 import type { Attendance, InvitationConfig } from '@/types/invitation';
 import { icons } from './icons';
 import { sectionHead, title } from './section';
+import { emboss } from './ornaments';
 
 const OPTIONS: Array<{ value: Attendance; label: string }> = [
   { value: 'hadir', label: 'Hadir' },
@@ -18,7 +19,8 @@ export function Rsvp(config: InvitationConfig, guestName: string): RawHtml {
     <section id="rsvp" data-bg="7" class="panel">
       <div class="head-card mb-4">${sectionHead('Konfirmasi Kehadiran')} ${title('Akan hadir', 'bersama kami?')}</div>
 
-      <div class="glass glass-sheen px-6 py-8">
+      <div class="glass glass-sheen orn-host px-6 py-8">
+        ${emboss()}
         <p class="t-body text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
           Mohon konfirmasi paling lambat
           <span class="font-medium text-[var(--color-denim)]">${config.rsvp.deadlineLabel}</span>

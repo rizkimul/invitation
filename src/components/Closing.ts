@@ -1,6 +1,7 @@
 import { html, type RawHtml } from '@/lib/dom';
 import { orderedCouple } from '@/lib/couple';
 import type { InvitationConfig } from '@/types/invitation';
+import { seal } from './ornaments';
 
 /**
  * Penutup: tanpa foto tambahan — foto latar terakhir dibiarkan terbuka
@@ -35,7 +36,8 @@ export function Closing(config: InvitationConfig): RawHtml {
         ${config.hashtag}
       </p>
 
-      <div class="glass glass-sheen mt-9 w-full max-w-[24rem] px-6 py-7" data-reveal="rise" style="--reveal-delay:180ms">
+      ${seal()}
+      <div class="glass glass-sheen orn-closing-card mt-9 w-full max-w-[24rem] px-6 py-7" data-reveal="rise" style="--reveal-delay:180ms">
         <p class="t-body text-[.85rem] leading-[1.9]">${config.closing.body}</p>
         <div class="mx-auto my-5 h-px w-12 bg-[rgba(34,37,44,.16)]"></div>
         <p class="t-label !text-[.5625rem]">${config.closing.signature}</p>

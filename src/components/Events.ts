@@ -28,7 +28,7 @@ export function Events(config: InvitationConfig): RawHtml {
     <section id="acara" data-bg="4" class="panel">
       <div class="head-card mb-4">${sectionHead('Rangkaian Acara')} ${title('Waktu &', 'tempat')}</div>
 
-      <article class="glass glass-sheen overflow-hidden" data-reveal="rise">
+      <article class="glass glass-sheen orn-ticket overflow-hidden" data-reveal="rise">
         <div class="relative w-full" style="aspect-ratio:1.6">
           ${picture(config.heroBanner, {
             className: 'absolute inset-0 h-full w-full object-cover',
@@ -41,7 +41,8 @@ export function Events(config: InvitationConfig): RawHtml {
           <p class="t-display mt-1 text-[4.25rem] leading-[.9] text-[var(--color-ink)]">${dayNum}</p>
           <p class="t-display-it mt-1 text-[1.25rem] text-[var(--color-denim)]">${monthYear}</p>
 
-          <div class="mt-8 space-y-6 border-y border-[rgba(34,37,44,.1)] py-7">
+          <div class="orn-ticket__seam" aria-hidden="true"></div>
+          <div class="orn-ticket__list mt-8 space-y-6 border-y border-[rgba(34,37,44,.1)] py-7">
             ${config.events.map(
               (event) => html`
                 <div>

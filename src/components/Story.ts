@@ -1,6 +1,7 @@
 import { html, raw, type RawHtml } from '@/lib/dom';
 import type { InvitationConfig, StoryItem } from '@/types/invitation';
 import { sectionHead, title } from './section';
+import { print, emboss } from './ornaments';
 
 /**
  * Tiga babak dalam satu bidang kaca.
@@ -52,7 +53,9 @@ export function Story(config: InvitationConfig): RawHtml {
     <section id="cerita" data-bg="5" class="panel">
       <div class="head-card mb-4">${sectionHead('Cerita Kami')} ${title('Sebuah cerita', 'perjalanan')}</div>
 
-      <div class="glass glass-sheen px-6 py-10">
+      ${print('g01-dinding-cokelat')}
+      <div class="glass glass-sheen orn-host px-6 py-10">
+        ${emboss()}
         ${config.story.map(
           (item, index) => html`
             ${index > 0 ? html`<div class="story-rule" data-reveal="fade" aria-hidden="true"></div>` : ''}
