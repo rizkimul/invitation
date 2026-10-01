@@ -9,7 +9,7 @@ import { sectionHead, title } from './section';
 const BADGE: Record<Attendance, string> = {
   hadir: 'Hadir',
   ragu: 'Ragu',
-  'tidak-hadir': 'Berhalangan',
+  'tidak-hadir': 'Tidak Hadir',
 };
 
 export function Wishes(config: InvitationConfig, guestName: string): RawHtml {

@@ -8,7 +8,7 @@ import { sectionHead, title } from './section';
 const OPTIONS: Array<{ value: Attendance; label: string }> = [
   { value: 'hadir', label: 'Hadir' },
   { value: 'ragu', label: 'Ragu' },
-  { value: 'tidak-hadir', label: 'Berhalangan' },
+  { value: 'tidak-hadir', label: 'Tidak Hadir' },
 ];
 
 export function Rsvp(config: InvitationConfig, guestName: string): RawHtml {
@@ -43,6 +43,9 @@ export function Rsvp(config: InvitationConfig, guestName: string): RawHtml {
 
           <fieldset>
             <legend class="t-label !text-[.5625rem]">Kehadiran</legend>
+            <!-- Tiga kolom sama lebar. "Tidak Hadir" boleh turun ke baris kedua
+                 bila kolomnya terlalu sempit (HP ≤ 340px); tombol lain ikut
+                 setinggi itu karena grid meregangkan semua isi barisnya. -->
             <div class="mt-2 grid grid-cols-3 gap-2">
               ${OPTIONS.map(
                 (option, index) => html`
@@ -81,9 +84,9 @@ export function Rsvp(config: InvitationConfig, guestName: string): RawHtml {
         <div id="rsvp-summary" class="mt-7 grid grid-cols-3 gap-2" data-reveal="up">
           ${OPTIONS.map(
             (option) => html`
-              <div class="rounded-2xl border border-[rgba(34,37,44,.12)] bg-white/40 py-4 text-center">
+              <div class="rounded-2xl border border-[rgba(34,37,44,.12)] bg-white/40 px-1 py-4 text-center">
                 <p class="t-display text-[1.45rem] text-[var(--color-ink)]" data-summary="${option.value}">0</p>
-                <p class="t-label mt-0.5 !text-[.5rem] !tracking-[.1em]">${option.label}</p>
+                <p class="t-label mt-0.5 !text-[.5rem] !leading-[1.4] !tracking-[.06em]">${option.label}</p>
               </div>
             `,
           )}
