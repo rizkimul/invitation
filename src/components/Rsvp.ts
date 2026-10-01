@@ -16,10 +16,10 @@ export function Rsvp(config: InvitationConfig, guestName: string): RawHtml {
 
   return html`
     <section id="rsvp" data-bg="7" class="panel">
-      <div class="glass glass-sheen px-6 py-8">
-        ${sectionHead('Konfirmasi Kehadiran')} ${title('Akan hadir', 'bersama kami?')}
+      <div class="head-card mb-4">${sectionHead('Konfirmasi Kehadiran')} ${title('Akan hadir', 'bersama kami?')}</div>
 
-        <p class="t-body mt-4 text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
+      <div class="glass glass-sheen px-6 py-8">
+        <p class="t-body text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
           Mohon konfirmasi paling lambat
           <span class="font-medium text-[var(--color-denim)]">${config.rsvp.deadlineLabel}</span>
           agar kami dapat menyiapkan tempat dengan baik.

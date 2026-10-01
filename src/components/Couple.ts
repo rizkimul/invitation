@@ -61,7 +61,7 @@ export function Couple(config: InvitationConfig): RawHtml {
   return html`
     <section id="mempelai" data-bg="2" class="relative">
       <div class="panel !pb-0">
-        <div class="glass px-6 py-8">
+        <div class="head-card">
           ${sectionHead('Mempelai')} ${title('Dua orang, satu', 'perjalanan baru')}
         </div>
       </div>

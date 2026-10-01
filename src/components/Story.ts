@@ -50,7 +50,7 @@ export function Story(config: InvitationConfig): RawHtml {
 
   return html`
     <section id="cerita" data-bg="5" class="panel">
-      <div class="glass mb-4 px-6 py-8">${sectionHead('Cerita Kami')} ${title('Sebuah cerita', 'perjalanan')}</div>
+      <div class="head-card mb-4">${sectionHead('Cerita Kami')} ${title('Sebuah cerita', 'perjalanan')}</div>
 
       <div class="glass glass-sheen px-6 py-10">
         ${config.story.map(

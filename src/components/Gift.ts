@@ -73,7 +73,7 @@ export function Gift(config: InvitationConfig): RawHtml {
 
   return html`
     <section id="hadiah" data-bg="9" class="panel">
-      <div class="glass mb-4 px-6 py-8">
+      <div class="head-card mb-4">
         ${sectionHead('Tanda Kasih')} ${title('Amplop', 'digital')}
         <p class="t-body mt-4 text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
           ${gift.intro}

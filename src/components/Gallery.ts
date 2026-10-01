@@ -20,9 +20,9 @@ export function Gallery(config: InvitationConfig): RawHtml {
   return html`
     <section id="galeri" data-bg="6" class="relative py-4">
       <div class="panel !mb-0 !py-0">
-        <div class="glass px-6 py-8">
+        <div class="head-card">
           ${sectionHead('Galeri')} ${title('Potret', 'kami berdua')}
-          <p class="t-label mt-4 !text-[.5625rem] !text-[var(--color-ink-4)]">
+          <p class="t-label mt-4 !text-[.5625rem] !text-white/70">
             Geser ke samping · ketuk untuk memperbesar
           </p>
         </div>

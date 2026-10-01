@@ -6,7 +6,7 @@ const toUtcStamp = (iso: string): string =>
 export function googleCalendarUrl(event: EventItem, coupleTitle: string, venue: VenueInfo): string {
   const params = new URLSearchParams({
     action: 'TEMPLATE',
-    text: `${event.title} — ${coupleTitle}`,
+    text: `${event.title} ${coupleTitle}`,
     dates: `${toUtcStamp(event.startISO)}/${toUtcStamp(event.endISO)}`,
     details: `${event.title} ${coupleTitle}\n${venue.name}\n${venue.address}`,
     location: `${venue.name}, ${venue.address}`,
@@ -26,7 +26,7 @@ export function downloadIcs(event: EventItem, coupleTitle: string, venue: VenueI
     `DTSTAMP:${toUtcStamp(new Date().toISOString())}`,
     `DTSTART:${toUtcStamp(event.startISO)}`,
     `DTEND:${toUtcStamp(event.endISO)}`,
-    `SUMMARY:${escapeIcs(`${event.title} — ${coupleTitle}`)}`,
+    `SUMMARY:${escapeIcs(`${event.title} ${coupleTitle}`)}`,
     `LOCATION:${escapeIcs(`${venue.name}, ${venue.address}`)}`,
     `DESCRIPTION:${escapeIcs(event.note ?? '')}`,
     'END:VEVENT',

@@ -26,7 +26,7 @@ export function Events(config: InvitationConfig): RawHtml {
 
   return html`
     <section id="acara" data-bg="4" class="panel">
-      <div class="glass mb-4 px-6 py-8">${sectionHead('Rangkaian Acara')} ${title('Waktu &', 'tempat')}</div>
+      <div class="head-card mb-4">${sectionHead('Rangkaian Acara')} ${title('Waktu &', 'tempat')}</div>
 
       <article class="glass glass-sheen overflow-hidden" data-reveal="rise">
         <div class="relative w-full" style="aspect-ratio:1.6">

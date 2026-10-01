@@ -25,7 +25,7 @@ import { Chrome, mountChrome } from '@/components/Chrome';
 
 export function bootstrap(root: HTMLElement): void {
   const guestName = getGuestName(config.defaultGuest);
-  document.title = `${orderedCouple(config).pairTitle} — Undangan Pernikahan`;
+  document.title = `Undangan Pernikahan ${orderedCouple(config).pairTitle}`;
 
   root.innerHTML = String(html`
     ${coverStyles} ${Cover(config, guestName)} ${Stage(config)} ${Dust(config)}

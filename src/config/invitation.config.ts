@@ -101,7 +101,7 @@ export const config: InvitationConfig = {
       startISO: '2026-10-10T08:00:00+07:00',
       endISO: '2026-10-10T11:00:00+07:00',
       dateLabel: 'Sabtu, 10 Oktober 2026',
-      timeLabel: '08.00 — 11.00 WIB',
+      timeLabel: '08.00–11.00 WIB',
     },
     {
       id: 'resepsi',
@@ -109,7 +109,7 @@ export const config: InvitationConfig = {
       startISO: '2026-10-10T11:00:00+07:00',
       endISO: '2026-10-10T14:00:00+07:00',
       dateLabel: 'Sabtu, 10 Oktober 2026',
-      timeLabel: '11.00 — 14.00 WIB',
+      timeLabel: '11.00–14.00 WIB',
     },
   ],
 

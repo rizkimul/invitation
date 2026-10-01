@@ -17,10 +17,10 @@ export function Wishes(config: InvitationConfig, guestName: string): RawHtml {
 
   return html`
     <section id="ucapan" data-bg="8" class="panel">
-      <div class="glass glass-sheen px-6 py-8">
-        ${sectionHead('Buku Ucapan')} ${title('Doa &', 'restu')}
+      <div class="head-card mb-4">${sectionHead('Buku Ucapan')} ${title('Doa &', 'restu')}</div>
 
-        <p class="t-body mt-4 text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
+      <div class="glass glass-sheen px-6 py-8">
+        <p class="t-body text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
           Tinggalkan pesan, doa, atau sekadar sapa. Setiap kata akan kami simpan.
         </p>
 
@@ -60,7 +60,7 @@ export function Wishes(config: InvitationConfig, guestName: string): RawHtml {
       <div class="mt-4">
         <div class="mb-3 flex items-center justify-between px-2">
           <span class="t-label t-on-photo !text-[.5625rem] !text-white/80">Ucapan Masuk</span>
-          <span id="wish-total" class="t-label t-on-photo !text-[.5625rem] !text-white/60">—</span>
+          <span id="wish-total" class="t-label t-on-photo !text-[.5625rem] !text-white/60"></span>
         </div>
 
         <div id="wish-list" class="no-scrollbar max-h-[26rem] space-y-3 overflow-y-auto pb-1">

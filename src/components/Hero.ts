@@ -1,7 +1,6 @@
 import { html, splitChars, type RawHtml } from '@/lib/dom';
 import { orderedCouple } from '@/lib/couple';
 import type { InvitationConfig } from '@/types/invitation';
-import { icons } from './icons';
 
 /**
  * Beranda: sengaja TIDAK memakai panel kaca — nama berdiri langsung
@@ -46,10 +45,6 @@ export function Hero(config: InvitationConfig): RawHtml {
         Bandung, Jawa Barat
       </p>
 
-      <div class="absolute bottom-8 flex flex-col items-center gap-2" data-reveal="fade">
-        <span class="t-label t-on-photo !text-[.5625rem] !text-white/60">Gulir</span>
-        <span class="animate-bounce text-white/70">${icons.arrowDown(16)}</span>
-      </div>
     </header>
   `;
 }

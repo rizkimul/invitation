@@ -52,7 +52,7 @@ export function Interlude(config: InvitationConfig): RawHtml {
       ${motionAllowed()
         ? ''
         : html`<p class="t-label mt-3 px-6 text-center !text-[.5rem] !text-white/60">
-            Mode hemat gerak aktif — menampilkan gambar diam.
+            Mode hemat gerak aktif. Yang tampil gambar diam.
           </p>`}
     </section>
   `;
