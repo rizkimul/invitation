@@ -828,15 +828,15 @@
    naik ke samping judul, bagian bawahnya ditindih kartu berikutnya.
    --k = seberapa jauh foto naik melewati batas bawah kepala section. */
 .orn-print {
-  --w: 6.5rem;
+  --w: 6.875rem;
   --ar: 1.45;
   --pad: 0.3125rem;
-  --k: 2.75rem;
+  --k: 2.25rem;
   --h: calc((var(--w) - 2 * var(--pad)) * var(--ar) + 2 * var(--pad));
   position: relative;
   z-index: 0;
   width: var(--w);
-  margin: calc(-1 * var(--k) - 1rem) -0.5rem calc(1rem + var(--k) - var(--h)) auto;
+  margin: calc(-1 * var(--k) - 1rem) -0.75rem calc(1rem + var(--k) - var(--h)) auto;
   padding: var(--pad);
   background: #f3f1ed;
   border-radius: 3px;
@@ -845,6 +845,14 @@
     0 6px 12px -2px rgba(10, 12, 18, 0.3),
     0 18px 32px -10px rgba(10, 12, 18, 0.55);
   transform: rotate(6deg);
+}
+/* Layar sempit: judul memakan hampir seluruh lebar, jadi cetakannya
+   diperkecil supaya tidak menimpa huruf terakhir judul. */
+@media (max-width: 374px) {
+  .orn-print {
+    --w: 5.5rem;
+    --k: 1.5rem;
+  }
 }
 .orn-print img {
   display: block;

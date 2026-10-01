@@ -53,7 +53,7 @@ export function Story(config: InvitationConfig): RawHtml {
     <section id="cerita" data-bg="5" class="panel">
       <div class="head-card mb-4">${sectionHead('Cerita Kami')} ${title('Sebuah cerita', 'perjalanan')}</div>
 
-      ${print('g01-dinding-cokelat')}
+      ${print('g12-tertawa')}
       <div class="glass glass-sheen orn-host px-6 py-10">
         ${emboss()}
         ${config.story.map(
