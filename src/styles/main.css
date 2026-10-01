@@ -913,9 +913,9 @@
   z-index: 2;
   display: grid;
   place-items: center;
-  width: 4.75rem;
-  height: 4.75rem;
-  margin: 2.25rem auto -2.375rem;
+  width: 5rem;
+  height: 5rem;
+  margin: 2.25rem auto -2.5rem;
   border-radius: 50%;
   background: radial-gradient(circle at 34% 28%, #66748f 0%, var(--color-denim) 52%, #323b4e 100%);
   box-shadow:
@@ -927,12 +927,24 @@
     0 10px 20px -6px rgba(10, 12, 18, 0.55);
 }
 .orn-seal__mark {
-  width: 3.4rem;
-  margin-left: 0.15rem;
+  /* Logonya tidak simetris: daun di kiri, ekor R di kanan bawah, dan pusat
+     lingkarannya bergeser dari tengah kotak logo. Jadi yang dipusatkan
+     adalah LINGKARAN logo (diukur dari berkas aslinya: pusat
+     1582,1230 dan jari-jari 1239 pada viewBox 2892x2560), agar sepusat
+     dengan tepi segel. Skalanya dipilih supaya ujung terjauh (ekor R,
+     1,35x jari-jari lingkaran) masih muat di dalam segel. */
+  position: absolute;
+  inset: 0;
+  width: auto;
+  aspect-ratio: auto;
+  -webkit-mask-size: 4.0199rem 3.5584rem;
+  mask-size: 4.0199rem 3.5584rem;
+  -webkit-mask-position: 0.3016rem 0.7909rem;
+  mask-position: 0.3016rem 0.7909rem;
   color: #eef1f6;
   opacity: 0.94;
 }
 .orn-closing-card {
   margin-top: 0;
-  padding-top: 3.25rem;
+  padding-top: 3.5rem;
 }
