@@ -5,7 +5,6 @@ import { relativeTime, toast } from '@/lib/ui';
 import type { Attendance, InvitationConfig, WishEntry } from '@/types/invitation';
 import { icons } from './icons';
 import { sectionHead, title } from './section';
-import { print } from './ornaments';
 
 const BADGE: Record<Attendance, string> = {
   hadir: 'Hadir',
@@ -19,7 +18,6 @@ export function Wishes(config: InvitationConfig, guestName: string): RawHtml {
   return html`
     <section id="ucapan" data-bg="8" class="panel">
       <div class="head-card mb-4">${sectionHead('Buku Ucapan')} ${title('Doa &', 'restu')}</div>
-      ${print('g08-sofa-bersandar')}
 
       <div class="glass glass-sheen px-6 py-8">
         <p class="t-body text-[.86rem] leading-[1.85]" data-reveal="up" style="--reveal-delay:80ms">
